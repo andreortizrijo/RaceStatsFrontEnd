@@ -2,6 +2,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url(./../../assets/img/loginBackground.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   height: 100%;
 
   &__container {
@@ -38,15 +42,16 @@
         color: #fff;
         font-size: 0.7rem;
         margin-bottom: 0.5rem;
+
+        &__btn{
+          color: #BF2A37;
+        }
       }
     }
   }
 }
 
-.horizontal-line{
-  border: 0.1rem solid #000;
-}
 
 header {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }

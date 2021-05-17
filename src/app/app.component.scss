@@ -1,0 +1,32 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &__main {
+    flex: 1;
+  }
+}
+
+.navigation {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: #BF2A37;
+
+  h4 {
+    flex: 1;
+    margin-left: 1rem;
+    margin-bottom: i0rem;
+  }
+
+  &__btn {
+    outline: none;
+    border: none;
+    padding: none;
+
+    &:focus {
+      box-shadow: none;
+      }
+  }
+}
