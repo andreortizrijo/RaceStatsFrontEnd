@@ -1,1 +1,18 @@
-<p>login works!</p>
+<div class='login'>
+  <div class='login__container'>
+    <div class='login__container__title'>
+      <h3>Sign in to RaceStats</h3>
+    </div>
+
+    <div class='mb-3 login__container__body'>
+      <input type='text' class='form-control login__container__body__input' name='username' [(ngModel)]='username' placeholder="Username">
+      <input type='password' class='form-control login__container__body__input' name='password' [(ngModel)]='password' placeholder="Password">
+    </div>
+
+      <div class='login__container__body__sign-up'>
+        <a>New to RaceStats? <span class='login__container__body__sign-up__btn'>Sign up</span></a>
+      </div>
+
+    <button class='btn login__container__body__sign-in' (click)="onClick()">Sign In</button>
+  </div>
+</div>
