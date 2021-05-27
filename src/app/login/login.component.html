@@ -12,11 +12,11 @@
     <div class='form-check form-switch login__container__body__remember-me'>
       <input type='checkbox' class='form-check-input login__container__body__remember-me__checkbox' name='flag' [(ngModel)]='autoLogin'>
       <p class='login__container__body__remember-me__text'>Remember me?</p>
-      <p class='login__container__body__remember-me__forgot-password' (click)='SignUp()'>Forgot password?</p>
+      <p class='login__container__body__remember-me__forgot-password'>Forgot password?</p>
     </div>
 
     <div class='login__container__body__sign-up'>
-      <p>New to RaceStats? <span class='login__container__body__sign-up__btn'>Sign up</span></p>
+      <p>New to RaceStats? <span class='login__container__body__sign-up__btn' (click)='SignUp()'>Sign up</span></p>
     </div>
 
     <button class='btn login__container__body__sign-in-btn' (click)='SignIn()'>Sign In</button>

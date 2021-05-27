@@ -1,0 +1,21 @@
+<div class='signup'>
+  <div class='signup__container'>
+    <div class='signup__container__title'>
+      <h3>Register to RaceStats</h3>
+    </div>
+
+    <div class='signup__container__body'>
+      <input type='text' class='form-control signup__container__body__input__form' name='email' [(ngModel)]='signup.email' placeholder='Email'>
+      <input type='text' class='form-control signup__container__body__input__form' name='username' [(ngModel)]='signup.username' placeholder="Username">
+      <input type='password' class='form-control signup__container__body__input__form' name='password' [(ngModel)]='signup.password' placeholder="Password">
+      <input type='password' class='form-control signup__container__body__input__form' name='confirmPassword' [(ngModel)]='signup.confirmPassword' placeholder='Confirm Password'>
+    </div>
+
+    <div class='form-check form-switch signup__container__body__agree'>
+      <input type='checkbox' class='form-check-input signup__container__body__agree__checkbox' name='flag' [(ngModel)]='agreementCheck'>
+      <p class='signup__container__body__agree__text'>Agree Terms</p>
+    </div>
+
+    <button class='btn signup__container__body__register-btn' (click)='SignUp()'>Register</button>
+  </div>
+</div>
