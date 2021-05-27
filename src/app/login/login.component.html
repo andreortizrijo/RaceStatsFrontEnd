@@ -5,14 +5,20 @@
     </div>
 
     <div class='mb-3 login__container__body'>
-      <input type='text' class='form-control login__container__body__input' name='username' [(ngModel)]='username' placeholder="Username">
-      <input type='password' class='form-control login__container__body__input' name='password' [(ngModel)]='password' placeholder="Password">
+      <input type='text' class='form-control login__container__body__input__form' name='username' [(ngModel)]='signin.username' placeholder="Username">
+      <input type='password' class='form-control login__container__body__input__form' name='password' [(ngModel)]='signin.password' placeholder="Password">
     </div>
 
-      <div class='login__container__body__sign-up'>
-        <a>New to RaceStats? <span class='login__container__body__sign-up__btn'>Sign up</span></a>
-      </div>
+    <div class='form-check form-switch login__container__body__remember-me'>
+      <input type='checkbox' class='form-check-input login__container__body__remember-me__checkbox' name='flag' [(ngModel)]='autoLogin'>
+      <p class='login__container__body__remember-me__text'>Remember me?</p>
+      <p class='login__container__body__remember-me__forgot-password' (click)='SignUp()'>Forgot password?</p>
+    </div>
 
-    <button class='btn login__container__body__sign-in' (click)="onClick()">Sign In</button>
+    <div class='login__container__body__sign-up'>
+      <p>New to RaceStats? <span class='login__container__body__sign-up__btn'>Sign up</span></p>
+    </div>
+
+    <button class='btn login__container__body__sign-in-btn' (click)='SignIn()'>Sign In</button>
   </div>
 </div>

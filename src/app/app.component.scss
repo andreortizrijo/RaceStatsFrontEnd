@@ -16,17 +16,19 @@
 
   h4 {
     flex: 1;
+    color: #fff;
     margin-left: 1rem;
-    margin-bottom: i0rem;
+    margin-bottom: 0rem;
   }
 
   &__btn {
     outline: none;
     border: none;
     padding: none;
+    color: #fff;
 
     &:focus {
       box-shadow: none;
-      }
+    }
   }
 }
