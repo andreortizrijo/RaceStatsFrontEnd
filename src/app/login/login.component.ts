@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { RequestsService } from '../service/requests.service';
+import { SigninModel } from '../models/signin/signin';
 
 @Component({
   selector: 'app-login',
@@ -8,23 +10,33 @@ import { HttpClient } from '@angular/common/http';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private http: HttpClient) { }
+  signin: SigninModel = new SigninModel();
+  autoLogin: Boolean = false;
+
+  constructor(private request: RequestsService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
-  info = {}
-  username: string = '';
-  password: string = '';
-  url = 'http://127.0.0.1:8000/api-users/login'
+  SignIn() {
+    this.request.httpPOST('http://127.0.0.1:8000/api-users/login', this.signin).subscribe(
+      (response) => {
+        if(this.autoLogin) {
+          localStorage.setItem('token', response.body['token']);
+        }
+        else{
+          sessionStorage.setItem('token', response.body['token']);
+        };
 
-  onClick() {
-    this.info = {
-      'username':this.username,
-      'password':this.password,
-    };
-
-    this.http.post(this.url, this.info);
+        this.router.navigate(['/dashboard']);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
+  SignUp(){
+    this.router.navigate(['/signup']);
+  }
 }

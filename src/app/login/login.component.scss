@@ -9,7 +9,7 @@
   height: 100%;
 
   &__container {
-    background-color: #495773;
+    background-color: #3a465c;
     border-radius: 0.4rem;
     width: 350px;
     padding: 2rem;
@@ -23,19 +23,47 @@
       align-self: center;
 
       &__input {
-        background: transparent;
-        color: #fff !important;
         margin-bottom: 0.5rem;
-        border: none;
-        border-radius: 0rem;
-        border-bottom: 0.1rem solid #fff;
+
+        &__form {
+          background: transparent;
+          color: #fff !important;
+          margin-bottom: 0.5rem;
+          border: none;
+          border-radius: 0rem;
+          border-bottom: 0.1rem solid #fff;
+        }
       }
 
-      &__sign-in {
+      &__sign-in-btn {
         background-color: #141640;
         color: #fff;
         border-radius: 0.4rem;
         width: 100%;
+      }
+
+      &__remember-me {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+
+        &__checkbox {
+          margin-right: 0.3rem;
+        }
+
+        &__text {
+          flex: 1;
+          color: #fff;
+          margin: 0rem;
+        }
+
+        &__forgot-password {
+          cursor: pointer;
+          color: #BF2A37;
+          margin: 0rem;
+        }
       }
 
       &__sign-up {
@@ -44,14 +72,10 @@
         margin-bottom: 0.5rem;
 
         &__btn{
+          cursor: pointer;
           color: #BF2A37;
         }
       }
     }
   }
-}
-
-
-header {
-  margin-bottom: 1rem;
 }
