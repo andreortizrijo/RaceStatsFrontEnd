@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RequestsService } from '../service/requests.service';
-import { SignupModel } from '../models/signup/signup';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-signup',
@@ -10,30 +10,49 @@ import { SignupModel } from '../models/signup/signup';
 })
 export class SignupComponent implements OnInit {
 
-  signup: SignupModel = new SignupModel();
-  agreementCheck: Boolean = false;
+  signupForm: FormGroup = new FormGroup({});
 
-  constructor(private request: RequestsService, private router: Router) { }
+  constructor(private fb: FormBuilder, private request: RequestsService, private router: Router) { }
 
   ngOnInit(): void {
+    this.initializeForm();
+  }
+
+  initializeForm(): void {
+    this.signupForm = this.fb.group({
+      email: ['', [ Validators.required, Validators.email ]],
+      username: ['', [ Validators.required, Validators.minLength(4), Validators.maxLength(10) ]],
+      password: ['', [ Validators.required, Validators.pattern("") ]],
+      confirmPassword: ['', [ Validators.required ]],
+    });
+  }
+
+  get email() { return this.signupForm.get('email')! as FormControl; }
+  get username() { return this.signupForm.get('username')!}
+  get password() { return this.signupForm.get('password')! }
+  get confirmPassword() { return this.signupForm.get('confirmPassword')! }
+
+  onSubmit() {
+    console.log(this.signupForm);
   }
 
   SignUp() {
-    if(this.signup.confirmPassword != this.signup.password) {
+    /*if(this.signup.confirmPassword != this.signup.password) {
       return console.log('Password is not equal!')
     }
 
-    if(this.agreementCheck == true) {
-      this.request.httpPOST('http://127.0.0.1:8000/api-users/register', this.signup).subscribe(
-        (response) => {
-          console.log(response);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
+    this.request.httpPOST('http://127.0.0.1:8000/api-users/register', this.signup).subscribe(
+      (response) => {
+        console.log(response);
+        this.router.navigate(['/login']);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );*/
+  }
 
-    console.log('You need to agree with terms!')
+  SignInPage() {
+    this.router.navigate(['/login']);
   }
 }

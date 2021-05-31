@@ -2,10 +2,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url(./../../assets/img/loginBackground.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
   height: 100%;
 
   &__container {
@@ -21,10 +17,10 @@
 
     &__body {
       align-self: center;
-      margin-bottom: 0.5rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
 
       &__input {
-        margin-bottom: 0.5rem;
 
         &__form {
           background: transparent;
@@ -36,30 +32,35 @@
         }
       }
 
-      &__agree {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        font-size: 0.8rem;
-        margin-bottom: 1rem;
-
-        &__checkbox {
-          margin-right: 0.3rem;
-        }
-
-        &__text {
-          flex: 1;
-          color: #fff;
-          margin: 0rem;
-          font-size: 0.7rem;
-        }
-      }
-
       &__register-btn {
         background-color: #141640;
         color: #fff;
         border-radius: 0.4rem;
+        margin-bottom: 1rem;
         width: 100%;
+      }
+
+      &__have-account {
+        display: flex;
+        justify-content: flex-end;
+
+        &__text {
+          flex: 1;
+          color: #fff;
+          font-size: 0.7rem;
+        }
+
+        &__redirect {
+          flex: 2;
+          cursor: pointer;
+          color: #BF2A37;
+          font-size: 0.7rem;
+        }
+      }
+
+      &__incorrect-input {
+        font-size: 0.7rem;
+        color: #fff;
       }
     }
   }

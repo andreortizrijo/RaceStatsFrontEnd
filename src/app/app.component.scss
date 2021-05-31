@@ -1,6 +1,10 @@
 .app {
   display: flex;
   flex-direction: column;
+  background-image: url(./../assets/img/loginBackground.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   height: 100%;
 
   &__main {

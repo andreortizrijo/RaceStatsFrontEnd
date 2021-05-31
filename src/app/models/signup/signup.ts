@@ -11,4 +11,3 @@ export class SignupModel {
     this.confirmPassword = confirmPassword;
   }
 }
-
