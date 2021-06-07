@@ -10,11 +10,8 @@ export class RequestsService {
   constructor(private http: HttpClient) { }
 
   httpGET(api: string, header: any): Observable<HttpResponse<any>>{
-    return this.http.get(api,
-      {
-        headers: new HttpHeaders({
-          'token': header,
-        }),
+    return this.http.get(api, {
+        headers: new HttpHeaders({ 'token': header }),
         observe: 'response',
       }
     );

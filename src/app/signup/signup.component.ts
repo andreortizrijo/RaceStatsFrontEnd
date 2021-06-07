@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RequestsService } from '../service/requests.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-signup',
@@ -11,6 +11,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 export class SignupComponent implements OnInit {
 
   signupForm: FormGroup = new FormGroup({});
+  errList = new Map([]);
 
   constructor(private fb: FormBuilder, private request: RequestsService, private router: Router) { }
 
@@ -27,29 +28,63 @@ export class SignupComponent implements OnInit {
     });
   }
 
-  get email() { return this.signupForm.get('email')! as FormControl; }
-  get username() { return this.signupForm.get('username')!}
+  get email() { return this.signupForm.get('email')! }
+  get username() { return this.signupForm.get('username')! }
   get password() { return this.signupForm.get('password')! }
   get confirmPassword() { return this.signupForm.get('confirmPassword')! }
 
-  onSubmit() {
-    console.log(this.signupForm);
+  GenerateJSON() {
+    return {
+      'email': this.email.value,
+      'username': this.username.value,
+      'password': this.password.value,
+    };
   }
 
-  SignUp() {
-    /*if(this.signup.confirmPassword != this.signup.password) {
-      return console.log('Password is not equal!')
+  InputChecker(input:any, property:string) {
+    if(input.invalid && (input.dirty || input.touched)) {
+      return "Invalid " + property + "!";
+    };
+
+    if(this.errList.size > 0) {
+      return this.errList.get(property)
     }
 
-    this.request.httpPOST('http://127.0.0.1:8000/api-users/register', this.signup).subscribe(
-      (response) => {
+    return null;
+  }
+
+  DisableSignUp() {
+    if((this.email.value && this.username.value && this.password.value) == '')
+      return true;
+
+    return false;
+  }
+
+  OnSubmit() {
+    this.errList = new Map([]);
+
+    if(this.password.value != this.confirmPassword.value) {
+      return console.log('The passwords doesnt match')
+    };
+
+    var data = this.GenerateJSON();
+
+    this.request.httpPOST('http://127.0.0.1:8000/api-users/register', data ).subscribe(
+      (response => {
         console.log(response);
-        this.router.navigate(['/login']);
-      },
-      (error) => {
+        return this.router.navigate(['/login'])
+      }),
+      (error => {
         console.log(error);
-      }
-    );*/
+
+        var key;
+        for(key in error.error) {
+          this.errList.set(key, error.error[key] + '');
+        }
+
+        return null;
+      }),
+    );
   }
 
   SignInPage() {

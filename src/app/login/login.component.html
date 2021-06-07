@@ -4,21 +4,23 @@
       <h3>Sign in to RaceStats</h3>
     </div>
 
-    <div class='mb-3 login__container__body'>
-      <input type='text' class='form-control login__container__body__input__form' name='username' [(ngModel)]='signin.username' placeholder="Username">
-      <input type='password' class='form-control login__container__body__input__form' name='password' [(ngModel)]='signin.password' placeholder="Password">
-    </div>
+    <form [formGroup]='signinForm'>
+      <div class='mb-3 login__container__body'>
+        <input type='text' class='form-control login__container__body__input__form' formControlName="username" id='username' placeholder="Username">
+        <input type='password' class='form-control login__container__body__input__form' formControlName="password" id='password' placeholder="Password">
+      </div>
 
-    <div class='form-check form-switch login__container__body__remember-me'>
-      <input type='checkbox' class='form-check-input login__container__body__remember-me__checkbox' name='flag' [(ngModel)]='autoLogin'>
-      <p class='login__container__body__remember-me__text'>Remember me?</p>
-      <p class='login__container__body__remember-me__forgot-password'>Forgot password?</p>
-    </div>
+      <div class='form-check form-switch login__container__body__remember-me'>
+        <input type='checkbox' class='form-check-input login__container__body__remember-me__checkbox' formControlName="autoLogin" id='autologin'>
+        <p class='login__container__body__remember-me__text'>Remember me?</p>
+        <p class='login__container__body__remember-me__forgot-password'>Forgot password?</p>
+      </div>
+    </form>
 
-    <div class='login__container__body__sign-up'>
-      <p>New to RaceStats? <span class='login__container__body__sign-up__btn' (click)='SignUpPage()'>Sign up</span></p>
-    </div>
+      <div class='login__container__body__sign-up'>
+        <p>New to RaceStats? <span class='login__container__body__sign-up__btn' (click)='SignUpPage()'>Sign up</span></p>
+      </div>
 
-    <button class='btn login__container__body__sign-in-btn' (click)='SignIn()'>Sign In</button>
+      <button class='btn login__container__body__sign-in-btn' (click)='Login()'>Sign In</button>
   </div>
 </div>

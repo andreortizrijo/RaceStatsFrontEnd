@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RequestsService } from '../service/requests.service';
-import { SigninModel } from '../models/signin/signin';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -10,18 +10,57 @@ import { SigninModel } from '../models/signin/signin';
 })
 export class LoginComponent implements OnInit {
 
-  signin: SigninModel = new SigninModel();
-  autoLogin: Boolean = false;
+  signinForm: FormGroup = new FormGroup({});
 
-  constructor(private request: RequestsService, private router: Router) { }
+  constructor(private fb: FormBuilder, private request: RequestsService, private router: Router) { }
 
   ngOnInit(): void {
+    this.CheckSession();
+    this.initializeForm();
   }
 
-  SignIn() {
-    this.request.httpPOST('http://127.0.0.1:8000/api-users/login', this.signin).subscribe(
+  CheckSession() {
+    if(localStorage.length > 0) {
+      localStorage.getItem('token');
+      return this.router.navigate(['/dashboard']);
+    }
+
+    if(sessionStorage.length > 0) {
+      sessionStorage.getItem('token');
+      return this.router.navigate(['/dashboard']);
+    };
+
+    return null;
+  }
+
+  initializeForm(): void {
+    this.signinForm = this.fb.group({
+      username: [''],
+      password: [''],
+      autoLogin: [false],
+    });
+
+  }
+
+  get username() { return this.signinForm.get('username')! }
+  get password() { return this.signinForm.get('password')! }
+  get autoLogin() { return this.signinForm.get('autoLogin')! }
+
+  GenerateJSON() {
+    return {
+      'username': this.username.value,
+      'password': this.password.value,
+    };
+  }
+
+  Login() {
+    var data = this.GenerateJSON();
+
+    console.log(data);
+
+    this.request.httpPOST('http://127.0.0.1:8000/api-users/login', data).subscribe(
       (response) => {
-        if(this.autoLogin) {
+        if(this.autoLogin.value) {
           localStorage.setItem('token', response.body['token']);
         }
         else{

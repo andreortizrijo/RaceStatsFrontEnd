@@ -6,26 +6,26 @@
 
     <form [formGroup]='signupForm'>
       <div class='signup__container__body'>
-        <input type='text' class='form-control signup__container__body__input__form' formControlName="email" name='email' placeholder='Email'>
-        <p class='signup__container__body__incorrect-input' *ngIf="email.invalid && (email.dirty || email.touched)">Invalid Email</p>
+        <input type='text' class='form-control signup__container__body__input__form' formControlName="email" id='email' placeholder='Email'>
+        <p class='signup__container__body__incorrect-input' [innerHTML]="InputChecker(email, 'email')"></p>
 
-        <input type='text' class='form-control signup__container__body__input__form' formControlName="username" name='username' placeholder="Username">
-        <p class='signup__container__body__incorrect-input' *ngIf="username.invalid && (username.dirty || username.touched)">Invalid Username</p>
+        <input type='text' class='form-control signup__container__body__input__form' formControlName="username" id='username' placeholder="Username">
+        <p class='signup__container__body__incorrect-input' [innerHTML]="InputChecker(username, 'username')"></p>
 
-        <input type='password' class='form-control signup__container__body__input__form' formControlName="password" name='password' placeholder="Password">
-        <p class='signup__container__body__incorrect-input' *ngIf="password.invalid && (password.dirty || password.touched)">Invalid Password</p>
+        <input type='password' class='form-control signup__container__body__input__form' formControlName="password" id='password' placeholder="Password">
+        <p class='signup__container__body__incorrect-input' [innerHTML]="InputChecker(password, 'password')"></p>
 
-        <input type='password' class='form-control signup__container__body__input__form' formControlName="confirmPassword" name='confirmPassword' placeholder='Confirm Password'>
+        <input type='password' class='form-control signup__container__body__input__form' formControlName="confirmPassword" id='confirmPassword' placeholder='Confirm Password'>
         <p class='signup__container__body__incorrect-input' *ngIf="confirmPassword.value != password.value">Password doesn't match!</p>
 
       </div>
     </form>
 
-      <button class='btn signup__container__body__register-btn' (click)='SignUp()'>Register</button>
+      <button class='btn signup__container__body__register-btn' [disabled]='DisableSignUp()' (click)='OnSubmit()'>Register</button>
 
     <div class='signup__container__body__have-account'>
       <p class='signup__container__body__have-account__text'>Have an account?</p>
-      <p class='signup__container__body__have-account__redirect' (click)='onSubmit()'>Log in</p>
+      <p class='signup__container__body__have-account__redirect' (click)='SignInPage()'>Log in</p>
     </div>
 
   </div>
