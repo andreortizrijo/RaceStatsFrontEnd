@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { PathsService } from '../service/paths.service';
 import { RequestsService } from '../service/requests.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -13,9 +14,10 @@ export class SignupComponent implements OnInit {
   signupForm: FormGroup = new FormGroup({});
   errList = new Map([]);
 
-  constructor(private fb: FormBuilder, private request: RequestsService, private router: Router) { }
+  constructor(private fb: FormBuilder, private request: RequestsService, private router: Router, private path: PathsService) { }
 
   ngOnInit(): void {
+    this.path.CheckSession(this.router);
     this.initializeForm();
   }
 
@@ -72,7 +74,7 @@ export class SignupComponent implements OnInit {
     this.request.httpPOST('http://127.0.0.1:8000/api-users/register', data ).subscribe(
       (response => {
         console.log(response);
-        return this.router.navigate(['/login'])
+        return this.path.Path(this.router, '/login')
       }),
       (error => {
         console.log(error);
@@ -88,6 +90,6 @@ export class SignupComponent implements OnInit {
   }
 
   SignInPage() {
-    this.router.navigate(['/login']);
+    this.path.Path(this.router, '/login');
   }
 }

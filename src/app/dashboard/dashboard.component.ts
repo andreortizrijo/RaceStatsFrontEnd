@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { PathsService } from '../service/paths.service';
 import { RequestsService } from '../service/requests.service';
 
 @Component({
@@ -10,9 +11,10 @@ import { RequestsService } from '../service/requests.service';
 export class DashboardComponent implements OnInit {
   token: any;
 
-  constructor(private request: RequestsService, private router: Router) { }
+  constructor(private request: RequestsService, private router: Router, private path: PathsService) { }
 
   ngOnInit(): void {
+    this.path.CheckSession(this.router);
     this.getUserInfo();
   }
 
@@ -40,7 +42,7 @@ export class DashboardComponent implements OnInit {
         localStorage.removeItem('token');
         sessionStorage.removeItem('token');
 
-        this.router.navigate(['/'])
+        this.path.Path(this.router, '/login');
       },
       (error) => {
         console.log(error);

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { PathsService } from '../service/paths.service';
 import { RequestsService } from '../service/requests.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -12,25 +13,11 @@ export class LoginComponent implements OnInit {
 
   signinForm: FormGroup = new FormGroup({});
 
-  constructor(private fb: FormBuilder, private request: RequestsService, private router: Router) { }
+  constructor(private fb: FormBuilder, private request: RequestsService, private router: Router, private path: PathsService) { }
 
   ngOnInit(): void {
-    this.CheckSession();
+    //this.path.CheckSession(this.router);
     this.initializeForm();
-  }
-
-  CheckSession() {
-    if(localStorage.length > 0) {
-      localStorage.getItem('token');
-      return this.router.navigate(['/dashboard']);
-    }
-
-    if(sessionStorage.length > 0) {
-      sessionStorage.getItem('token');
-      return this.router.navigate(['/dashboard']);
-    };
-
-    return null;
   }
 
   initializeForm(): void {
@@ -67,7 +54,7 @@ export class LoginComponent implements OnInit {
           sessionStorage.setItem('token', response.body['token']);
         };
 
-        this.router.navigate(['/dashboard']);
+        this.path.Path(this.router, '/dashboard');
       },
       (error) => {
         console.log(error);
@@ -76,6 +63,6 @@ export class LoginComponent implements OnInit {
   }
 
   SignUpPage(){
-    this.router.navigate(['/signup']);
+    this.path.Path(this.router, '/signup');
   }
 }
