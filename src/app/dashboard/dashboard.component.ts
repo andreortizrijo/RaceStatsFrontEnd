@@ -42,22 +42,6 @@ export class DashboardComponent implements OnInit {
       );
   };
 
-  logOut(){
-    let token = this.getToken()
-    this.request.httpPOST('http://127.0.0.1:8000/api-users/logout', '', token).subscribe(
-      (response) => {
-        console.log(response);
-        localStorage.removeItem('token');
-        sessionStorage.removeItem('token');
-
-        this.path.Path(this.router, '/login');
-      },
-      (error) => {
-        console.log(error);
-      }
-      );
-  };
-
   getToken(){
     let token: any;
 
