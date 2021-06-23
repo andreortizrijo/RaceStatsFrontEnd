@@ -22,6 +22,7 @@
     </form>
 
       <button class='btn signup__container__body__register-btn' [disabled]='DisableSignUp()' (click)='OnSubmit()'>Register</button>
+      <p class='signup__container__body__register-btn__response' [innerHTML]='errorMessage'></p>
 
     <div class='signup__container__body__have-account'>
       <p class='signup__container__body__have-account__text'>Have an account?</p>

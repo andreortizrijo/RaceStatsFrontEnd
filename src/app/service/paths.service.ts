@@ -12,15 +12,11 @@ export class PathsService {
   }
 
   CheckSession(router: any) {
-    if(localStorage.length > 0) {
+    if(localStorage.getItem('token') != undefined) {
       return router.navigate(['/dashboard']);
-    }
-
-    if(sessionStorage.length > 0) {
+    };
+    if(sessionStorage.getItem('token') != undefined) {
       return router.navigate(['/dashboard']);
-    }
-
-    return router.navigate(['/login']);
+    };
   }
-
 }

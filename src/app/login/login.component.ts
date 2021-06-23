@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PathsService } from '../service/paths.service';
 import { RequestsService } from '../service/requests.service';
+import { LoginstatecontrolService } from '../service/loginstatecontrol.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
@@ -10,13 +11,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
   signinForm: FormGroup = new FormGroup({});
 
-  constructor(private fb: FormBuilder, private request: RequestsService, private router: Router, private path: PathsService) { }
+  constructor(private fb: FormBuilder, private request: RequestsService, private router: Router, private path: PathsService, private loginstate: LoginstatecontrolService) { }
 
   ngOnInit(): void {
-    //this.path.CheckSession(this.router);
+    this.path.CheckSession(this.router);
     this.initializeForm();
   }
 
@@ -24,45 +24,45 @@ export class LoginComponent implements OnInit {
     this.signinForm = this.fb.group({
       username: [''],
       password: [''],
-      autoLogin: [false],
+      remmemberMe: [false],
     });
-
   }
 
   get username() { return this.signinForm.get('username')! }
   get password() { return this.signinForm.get('password')! }
-  get autoLogin() { return this.signinForm.get('autoLogin')! }
+  get remmemberMe() { return this.signinForm.get('remmemberMe')! }
 
-  GenerateJSON() {
+  generatePayload() {
     return {
       'username': this.username.value,
       'password': this.password.value,
     };
   }
 
-  Login() {
-    var data = this.GenerateJSON();
-
-    console.log(data);
+  login() {
+    var data = this.generatePayload();
 
     this.request.httpPOST('http://127.0.0.1:8000/api-users/login', data).subscribe(
       (response) => {
-        if(this.autoLogin.value) {
-          localStorage.setItem('token', response.body['token']);
+        if(this.remmemberMe.value == false) {
+          localStorage.setItem('token', response.body);
         }
         else{
-          sessionStorage.setItem('token', response.body['token']);
+          sessionStorage.setItem('token', response.body);
         };
 
+        this.loginstate.emit(true);
         this.path.Path(this.router, '/dashboard');
+
+        return true;
       },
       (error) => {
-        console.log(error);
+        return error.error
       }
     );
   }
 
-  SignUpPage(){
+  signUpPage(){
     this.path.Path(this.router, '/signup');
   }
 }

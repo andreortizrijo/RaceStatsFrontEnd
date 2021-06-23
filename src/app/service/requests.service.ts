@@ -14,11 +14,12 @@ export class RequestsService {
         headers: new HttpHeaders({ 'token': header }),
         observe: 'response',
       }
-    );
-  };
+      );
+    };
 
-  httpPOST(api: string, body: any): Observable<HttpResponse<any>>{
-    return this.http.post(api, body, {
+    httpPOST(api: string, body: any, header: any = ''): Observable<HttpResponse<any>>{
+      return this.http.post(api, body, {
+      headers: new HttpHeaders({ 'token': header }),
       observe: 'response',
     })
   }

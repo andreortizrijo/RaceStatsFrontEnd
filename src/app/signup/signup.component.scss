@@ -38,28 +38,35 @@
         border-radius: 0.4rem;
         margin-bottom: 1rem;
         width: 100%;
+
+        &__response {
+          margin: 0rem;
+          margin-bottom: 0.5rem;
+          color: #BF2A37;
+          font-size: 0.8rem;
+        }
       }
 
       &__have-account {
         display: flex;
-        justify-content: flex-end;
+        justify-content: flex-start;
 
         &__text {
-          flex: 1;
+          flex: 3;
           color: #fff;
-          font-size: 0.7rem;
+          font-size: 0.8rem;
         }
 
         &__redirect {
-          flex: 2;
+          flex: 5;
           cursor: pointer;
           color: #BF2A37;
-          font-size: 0.7rem;
+          font-size: 0.8rem;
         }
       }
 
       &__incorrect-input {
-        font-size: 0.7rem;
+        font-size: 0.8rem;
         color: #fff;
       }
     }

@@ -11,28 +11,3 @@
     flex: 1;
   }
 }
-
-.navigation {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  background-color: #BF2A37;
-
-  h4 {
-    flex: 1;
-    color: #fff;
-    margin-left: 1rem;
-    margin-bottom: 0rem;
-  }
-
-  &__btn {
-    outline: none;
-    border: none;
-    padding: none;
-    color: #fff;
-
-    &:focus {
-      box-shadow: none;
-    }
-  }
-}

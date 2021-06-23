@@ -10,9 +10,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
-
   signupForm: FormGroup = new FormGroup({});
-  errList = new Map([]);
+  errorMessage: String = '';
 
   constructor(private fb: FormBuilder, private request: RequestsService, private router: Router, private path: PathsService) { }
 
@@ -23,10 +22,10 @@ export class SignupComponent implements OnInit {
 
   initializeForm(): void {
     this.signupForm = this.fb.group({
-      email: ['', [ Validators.required, Validators.email ]],
-      username: ['', [ Validators.required, Validators.minLength(4), Validators.maxLength(10) ]],
-      password: ['', [ Validators.required, Validators.pattern("") ]],
-      confirmPassword: ['', [ Validators.required ]],
+      email: ['', [ Validators.required, Validators.pattern("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$") ]],
+      username: ['', [ Validators.required, Validators.pattern("^[a-zA-Z0-9-_]{3,32}$") ]],
+      password: ['', [ Validators.required, Validators.pattern("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&]).{6,}") ]],
+      confirmPassword: ['', [ Validators.required, Validators.pattern("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&]).{6,}") ]],
     });
   }
 
@@ -44,31 +43,31 @@ export class SignupComponent implements OnInit {
   }
 
   InputChecker(input:any, property:string) {
+    let message = '';
     if(input.invalid && (input.dirty || input.touched)) {
-      return "Invalid " + property + "!";
+      if(property == 'password'){
+        return message = 'Must contain at least 8 characters and must have 1 uppercase, 1 lowercase, 1 number and 1 special character.'
+      }
+
+      if(property == 'username'){
+        return message = 'Must contain at least 6 characters.'
+      }else{
+        return message = 'Invalid ' + property + '.'
+      };
     };
 
-    if(this.errList.size > 0) {
-      return this.errList.get(property)
-    }
-
-    return null;
+    return message;
   }
 
   DisableSignUp() {
-    if((this.email.value && this.username.value && this.password.value) == '')
+    if(this.confirmPassword.value != this.password.value){
       return true;
+    }
 
-    return false;
+    return this.signupForm.invalid;
   }
 
   OnSubmit() {
-    this.errList = new Map([]);
-
-    if(this.password.value != this.confirmPassword.value) {
-      return console.log('The passwords doesnt match')
-    };
-
     var data = this.GenerateJSON();
 
     this.request.httpPOST('http://127.0.0.1:8000/api-users/register', data ).subscribe(
@@ -77,14 +76,11 @@ export class SignupComponent implements OnInit {
         return this.path.Path(this.router, '/login')
       }),
       (error => {
-        console.log(error);
+        for (let key in error.error) {
+          this.errorMessage = error.error[key][0];
+        };
 
-        var key;
-        for(key in error.error) {
-          this.errList.set(key, error.error[key] + '');
-        }
-
-        return null;
+        return this.errorMessage;
       }),
     );
   }
