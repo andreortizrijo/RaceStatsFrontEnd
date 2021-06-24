@@ -11,6 +11,18 @@
     margin-bottom: 0rem;
   }
 
+  &__text {
+    margin: 0rem;
+    outline: none;
+    border: none;
+    padding: none;
+    color: #fff;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
   &__btn {
     outline: none;
     border: none;

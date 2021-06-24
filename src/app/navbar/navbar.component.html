@@ -1,8 +1,9 @@
 <div class='navigation'>
     <h4>RACESTATS</h4>
-    <button class='btn navigation__btn' *ngIf="!isLogin" [routerLink]="['/login']" >Sign in</button>
-    <button class='btn navigation__btn' *ngIf="!isLogin" [routerLink]="['/signup']" >Sign up</button>
-    <button class='btn navigation__btn' *ngIf="isLogin" [routerLink]="['/']" >Live</button>
-    <button class='btn navigation__btn' *ngIf="isLogin" [routerLink]="['/']" >Auth</button>
-    <button class='btn navigation__btn' *ngIf="isLogin" (click)="logout()">Logout</button>
+    <button class='btn navigation__btn' *ngIf="!isLogin" [routerLink]="['/login']" >SIGN IN</button>
+    <button class='btn navigation__btn' *ngIf="!isLogin" [routerLink]="['/signup']" >SIGN UP</button>
+    <p class='navigation__text' *ngIf="isLogin">{{username}}</p>
+    <button class='btn navigation__btn' *ngIf="isLogin" [routerLink]="['/']" >LIVE GRAPH</button>
+    <button class='btn navigation__btn' *ngIf="isLogin" (click)="donwloadConfigFile()" >DOWNLOAD CONFIG</button>
+    <button class='btn navigation__btn' *ngIf="isLogin" (click)="logout()">LOGOUT</button>
 </div>

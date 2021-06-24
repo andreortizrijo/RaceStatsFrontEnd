@@ -46,9 +46,13 @@ export class LoginComponent implements OnInit {
       (response) => {
         if(this.remmemberMe.value == false) {
           localStorage.setItem('token', response.body);
+          localStorage.setItem('islogin', 'true');
+          localStorage.setItem('name', data.username);
         }
         else{
           sessionStorage.setItem('token', response.body);
+          sessionStorage.setItem('islogin', 'true');
+          sessionStorage.setItem('name', data.username);
         };
 
         this.loginstate.emit(true);

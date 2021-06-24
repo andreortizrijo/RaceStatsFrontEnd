@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { LoginstatecontrolService } from '../service/loginstatecontrol.service';
 import { PathsService } from '../service/paths.service';
 import { RequestsService } from '../service/requests.service';
+import { saveAs } from 'file-saver';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-navbar',
@@ -11,12 +13,26 @@ import { RequestsService } from '../service/requests.service';
 })
 export class NavbarComponent implements OnInit {
   isLogin: any = false;
+  username: any = '';
   constructor(private loginstate: LoginstatecontrolService, private request: RequestsService, private router: Router, private path: PathsService) { }
 
   ngOnInit(): void {
+    this.loginState()
     this.loginstate.observer.subscribe( data => {
       this.isLogin = data;
     })
+  }
+
+  loginState(){
+    if(localStorage.getItem('islogin')){
+      this.isLogin = true;
+      this.username = localStorage.getItem('name')?.toUpperCase()
+    };
+
+    if(sessionStorage.getItem('islogin')){
+      this.isLogin = true;
+      this.username = sessionStorage.getItem('name')?.toUpperCase()
+    };
   }
 
   logout(){
@@ -27,8 +43,12 @@ export class NavbarComponent implements OnInit {
 
         if(localStorage.getItem('token')){
           localStorage.removeItem('token');
+          localStorage.removeItem('islogin');
+          localStorage.removeItem('name');
         }else{
           sessionStorage.removeItem('token');
+          sessionStorage.removeItem('islogin');
+          sessionStorage.removeItem('name');
         }
 
         this.loginstate.emit(false);
@@ -47,4 +67,20 @@ export class NavbarComponent implements OnInit {
       return sessionStorage.getItem('token');
     }
   };
+
+  donwloadConfigFile(){
+    let token = this.getToken();
+
+    this.request.httpGET('http://127.0.0.1:8000/api-users/download', token).subscribe(
+      response => {
+        console.log(response.body);
+        //var file = new File([response.data], '')
+      },
+      error => {
+        console.log(error.error.text)
+        var file = new File([error.error.text], 'config.ini', {type: "text/plain;charset=utf-8"});
+        FileSaver.saveAs(file);
+      }
+    );
+  }
 }
