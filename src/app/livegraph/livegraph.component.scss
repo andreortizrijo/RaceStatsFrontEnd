@@ -1,0 +1,13 @@
+.graph {
+  display: flex;
+  margin: 0rem;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  &__rendered {
+    margin: 0rem;
+    width: 50%;
+    height: 50%;
+  }
+}

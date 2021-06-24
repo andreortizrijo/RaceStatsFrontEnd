@@ -6,12 +6,12 @@
 
     <form [formGroup]='signinForm'>
       <div class='mb-3 login__container__body'>
-        <input type='text' class='form-control login__container__body__input__form' formControlName="username" id='username' placeholder="Username">
-        <input type='password' class='form-control login__container__body__input__form' formControlName="password" id='password' placeholder="Password">
+        <input type='text' class='form-control login__container__body__input__form' formControlName="username" #username placeholder="Username">
+        <input type='password' class='form-control login__container__body__input__form' formControlName="password" #password placeholder="Password">
       </div>
 
       <div class='form-check form-switch login__container__body__remember-me'>
-        <input type='checkbox' class='form-check-input login__container__body__remember-me__checkbox' formControlName="remmemberMe" id='remmemberMe'>
+        <input type='checkbox' class='form-check-input login__container__body__remember-me__checkbox' formControlName="remmemberMe" #remmemberMe>
         <p class='login__container__body__remember-me__text'>Remember me?</p>
         <p class='login__container__body__remember-me__forgot-password'>Forgot password?</p>
       </div>

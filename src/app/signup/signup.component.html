@@ -6,16 +6,16 @@
 
     <form [formGroup]='signupForm'>
       <div class='signup__container__body'>
-        <input type='text' class='form-control signup__container__body__input__form' formControlName="email" id='email' placeholder='Email'>
+        <input type='text' class='form-control signup__container__body__input__form' formControlName="email" #email placeholder='Email'>
         <p class='signup__container__body__incorrect-input' [innerHTML]="InputChecker(email, 'email')"></p>
 
-        <input type='text' class='form-control signup__container__body__input__form' formControlName="username" id='username' placeholder="Username">
+        <input type='text' class='form-control signup__container__body__input__form' formControlName="username" #username placeholder="Username">
         <p class='signup__container__body__incorrect-input' [innerHTML]="InputChecker(username, 'username')"></p>
 
-        <input type='password' class='form-control signup__container__body__input__form' formControlName="password" id='password' placeholder="Password">
+        <input type='password' class='form-control signup__container__body__input__form' formControlName="password" #password placeholder="Password">
         <p class='signup__container__body__incorrect-input' [innerHTML]="InputChecker(password, 'password')"></p>
 
-        <input type='password' class='form-control signup__container__body__input__form' formControlName="confirmPassword" id='confirmPassword' placeholder='Confirm Password'>
+        <input type='password' class='form-control signup__container__body__input__form' formControlName="confirmPassword" #confirmPassword placeholder='Confirm Password'>
         <p class='signup__container__body__incorrect-input' *ngIf="confirmPassword.value != password.value">Password doesn't match!</p>
 
       </div>
