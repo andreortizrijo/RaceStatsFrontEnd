@@ -45,14 +45,14 @@ export class LoginComponent implements OnInit {
     this.request.httpPOST('http://127.0.0.1:8000/api-users/login', data).subscribe(
       (response) => {
         if(this.remmemberMe.value == false) {
-          localStorage.setItem('token', response.body);
-          localStorage.setItem('islogin', 'true');
-          localStorage.setItem('name', data.username);
-        }
-        else{
           sessionStorage.setItem('token', response.body);
           sessionStorage.setItem('islogin', 'true');
           sessionStorage.setItem('name', data.username);
+        }
+        else{
+          localStorage.setItem('token', response.body);
+          localStorage.setItem('islogin', 'true');
+          localStorage.setItem('name', data.username);
         };
 
         this.loginstate.emit(true);
