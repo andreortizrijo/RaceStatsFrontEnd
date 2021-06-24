@@ -1,5 +1,5 @@
 <div class="dashboard">
-  <table mat-table [dataSource]="dataSource" class="dashboard__table-container" >
+  <table mat-table #data [dataSource]="dataSource" class="dashboard__table-container" >
 
     <ng-container matColumnDef="number">
       <th mat-header-cell *matHeaderCellDef class="dashboard__table-container__title"> No. </th>
@@ -29,5 +29,5 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  <mat-paginator class="dashboard__paginator" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  <mat-paginator #paginator [length]="length" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="dashboard__paginator"></mat-paginator>
 </div>

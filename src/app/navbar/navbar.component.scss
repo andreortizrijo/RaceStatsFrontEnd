@@ -6,17 +6,19 @@
 
   h4 {
     flex: 1;
-    color: #fff;
+    margin: 0rem;
     margin-left: 1rem;
-    margin-bottom: 0rem;
+    color: #fff;
   }
 
   &__text {
     margin: 0rem;
+    margin-right: 1rem;
     outline: none;
     border: none;
     padding: none;
     color: #fff;
+    font-size: 1rem;
 
     &:focus {
       box-shadow: none;
@@ -24,10 +26,17 @@
   }
 
   &__btn {
+    width: 100px;
+    height: 30px;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+    margin-right: 1rem;
     outline: none;
     border: none;
     padding: none;
     color: #fff;
+    font-size: 0.8rem;
+    background-color: #861c24;
 
     &:focus {
       box-shadow: none;

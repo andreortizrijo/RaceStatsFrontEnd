@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatTable } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -13,19 +14,7 @@ export interface RecordInfo {
   besttime: string;
 }
 
-const ELEMENT_DATA: RecordInfo[] = [
-  {number: '1', track: 'Hydrogen', trackconfiguration: '---', carmodel: 'H', besttime: '02:20.654'},
-  {number: '2', track: 'Hydrogen', trackconfiguration: '---', carmodel: 'H', besttime: '02:20.654'},
-  {number: '3', track: 'Hydrogen', trackconfiguration: '---', carmodel: 'H', besttime: '02:20.654'},
-  {number: '4', track: 'Hydrogen', trackconfiguration: '---', carmodel: 'H', besttime: '02:20.654'},
-  {number: '5', track: 'Hydrogen', trackconfiguration: '---', carmodel: 'H', besttime: '02:20.654'},
-  {number: '6', track: 'Hydrogen', trackconfiguration: '---', carmodel: 'H', besttime: '02:20.654'},
-  {number: '7', track: 'Hydrogen', trackconfiguration: '---', carmodel: 'H', besttime: '02:20.654'},
-  {number: '8', track: 'Hydrogen', trackconfiguration: '---', carmodel: 'H', besttime: '02:20.654'},
-  {number: '9', track: 'Hydrogen', trackconfiguration: '---', carmodel: 'H', besttime: '02:20.654'},
-  {number: '10', track: 'Hydrogen', trackconfiguration: '---', carmodel: 'H', besttime: '02:20.654'},
-  {number: '11', track: 'Hydrogen', trackconfiguration: '---', carmodel: 'H', besttime: '02:20.654'},
-];
+const ELEMENT_DATA: RecordInfo[] = [];
 
 @Component({
   selector: 'app-dashboard',
@@ -33,33 +22,52 @@ const ELEMENT_DATA: RecordInfo[] = [
   styleUrls: ['./dashboard.component.scss']
 })
 
+
 export class DashboardComponent implements OnInit {
   displayedColumns: string[] = ['number', 'track', 'trackconfiguration', 'carmodel', 'besttime'];
-  dataSource = new MatTableDataSource<RecordInfo>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  length = '';
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('table') data!: MatTable<any>;
+  @ViewChild('paginator') paginator!: MatPaginator;
 
   constructor(private request: RequestsService, private router: Router, private path: PathsService) { }
 
   ngOnInit(): void {
     this.path.CheckSession(this.router);
-    this.getUserInfo();
-    this.dataSource.paginator = this.paginator;
+    this.getRecordInfo();
   };
 
-  getUserInfo() {
-    let token = this.getToken()
-    this.request.httpGET('http://127.0.0.1:8000/api-users/user', token).subscribe(
+  private getRecordInfo(): RecordInfo[] {
+    let token = this.getToken();
+    var ELEMENT_DATA: RecordInfo[] = [];
+    var item:any;
+
+    this.request.httpGET('http://127.0.0.1:8000/api-datahandler/record', token).subscribe(
       (response) => {
-        console.log(response);
-      },
-      (error) => {
-        console.log(error);
+        for(item in response.body){
+          var data = {
+            number: response.body[item].number,
+            track: response.body[item].track,
+            trackconfiguration: response.body[item].trackconfiguration,
+            carmodel: response.body[item].carmodel,
+            besttime: response.body[item].besttime
+          };
+
+          ELEMENT_DATA.push(data);
+        };
+
+        this.length = String(ELEMENT_DATA.length);
+        this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+        this.dataSource.paginator = this.paginator;
+        this.data.renderRows();
+        return ELEMENT_DATA;
       }
       );
+    return ELEMENT_DATA;
   };
 
-  getToken(){
+  getToken() {
     if(localStorage.getItem('token')){
       return localStorage.getItem('token');
     }else{
