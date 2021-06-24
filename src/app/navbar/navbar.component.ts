@@ -71,7 +71,7 @@ export class NavbarComponent implements OnInit {
   donwloadConfigFile(){
     let token = this.getToken();
 
-    this.request.httpGET('http://127.0.0.1:8000/api-users/download', token).subscribe(
+    this.request.httpGET('http://127.0.0.1:8000/api-users/download', {'token':token}).subscribe(
       response => {
         console.log(response.body);
         //var file = new File([response.data], '')

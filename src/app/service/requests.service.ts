@@ -11,7 +11,7 @@ export class RequestsService {
 
   httpGET(api: string, header: any): Observable<HttpResponse<any>>{
     return this.http.get(api, {
-        headers: new HttpHeaders({ 'token': header }),
+        headers: new HttpHeaders( header ),
         observe: 'response',
       }
       );

@@ -1,13 +1,12 @@
 .graph {
   display: flex;
-  margin: 0rem;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   height: 100%;
 
   &__rendered {
-    margin: 0rem;
-    width: 50%;
-    height: 50%;
+    background-color: #fff;
+    color: #000;
   }
 }

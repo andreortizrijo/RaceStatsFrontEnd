@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit {
     var ELEMENT_DATA: RecordInfo[] = [];
     var item:any;
 
-    this.request.httpGET('http://127.0.0.1:8000/api-datahandler/record', token).subscribe(
+    this.request.httpGET('http://127.0.0.1:8000/api-datahandler/record', {'token':token}).subscribe(
       (response) => {
         for(item in response.body){
           var data = {
