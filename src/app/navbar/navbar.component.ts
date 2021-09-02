@@ -20,6 +20,14 @@ export class NavbarComponent implements OnInit {
     this.loginState()
     this.loginstate.observer.subscribe( data => {
       this.isLogin = data;
+      this.username = data;
+    })
+  }
+
+  ngAfterViewInit(): void {
+    this.loginState()
+    this.loginstate.observer.subscribe( data => {
+      this.isLogin = data;
     })
   }
 
@@ -74,10 +82,10 @@ export class NavbarComponent implements OnInit {
     this.request.httpGET('http://127.0.0.1:8000/api-users/download', {'token':token}).subscribe(
       response => {
         console.log(response.body);
-        //var file = new File([response.data], '')
+        //var file = new File([error.error.text], 'config.ini', {type: "text/plain;charset=utf-8"});
+        //FileSaver.saveAs(file);
       },
       error => {
-        console.log(error.error.text)
         var file = new File([error.error.text], 'config.ini', {type: "text/plain;charset=utf-8"});
         FileSaver.saveAs(file);
       }

@@ -7,8 +7,10 @@ export class PathsService {
 
   constructor() { }
 
-  Path(router: any, path:string) {
-    return router.navigate([path]);
+  Path(router: any, path:string, data?:any) {
+    console.log(path)
+    console.log(data)
+    return router.navigate([path, data]);
   }
 
   CheckSession(router: any) {

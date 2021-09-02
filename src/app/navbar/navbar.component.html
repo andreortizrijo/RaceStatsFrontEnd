@@ -3,7 +3,8 @@
     <button class='btn navigation__btn' *ngIf="!isLogin" [routerLink]="['/login']" >SIGN IN</button>
     <button class='btn navigation__btn' *ngIf="!isLogin" [routerLink]="['/signup']" >SIGN UP</button>
     <p class='navigation__text' *ngIf="isLogin">{{username}}</p>
-    <button class='btn navigation__btn' *ngIf="isLogin" [routerLink]="['/']" >LIVE GRAPH</button>
+    <button class='btn navigation__btn' *ngIf="isLogin" [routerLink]="['/dashboard']" >RECORD</button>
+    <button class='btn navigation__btn' *ngIf="isLogin" [routerLink]="['/live']" >LIVE GRAPH</button>
     <button class='btn navigation__btn' *ngIf="isLogin" (click)="donwloadConfigFile()" >GET AUTH</button>
     <button class='btn navigation__btn' *ngIf="isLogin" [routerLink]="['/instructions']" >NEED HELP?</button>
     <button class='btn navigation__btn' *ngIf="isLogin" (click)="logout()">LOGOUT</button>

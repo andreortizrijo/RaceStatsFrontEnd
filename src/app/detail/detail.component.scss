@@ -1,0 +1,37 @@
+.dashboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+
+  &__paginator {
+    width: 70%;
+    background-color: #141640;
+    color: #fff;
+  }
+
+  &__table-container {
+    flex-direction: row;
+    margin: 0rem;
+    padding: 1rem;
+    border-radius: 0.4rem;
+    width: 70%;
+    padding: 2rem;
+
+    &__title {
+      margin: 0rem;
+      color: #fff;
+      font-weight: bold;
+      background-color: #141640;
+    }
+
+    &__information {
+      margin: 0rem;
+      text-align: start;
+      background-color: #49577399;
+      color: #fff;
+      font-weight: lighter;
+    }
+  }
+}

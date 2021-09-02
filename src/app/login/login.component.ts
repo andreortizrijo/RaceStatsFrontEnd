@@ -56,6 +56,7 @@ export class LoginComponent implements OnInit {
         };
 
         this.loginstate.emit(true);
+        this.loginstate.emit(data.username.toUpperCase());
         this.path.Path(this.router, '/dashboard');
 
         return true;

@@ -1,12 +1,20 @@
-.graph {
+.container {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  height: 100%;
+  width: 100%;
 
-  &__rendered {
-    background-color: #fff;
-    color: #000;
+  &__graph {
+    width: 80%;
+
+    &__rendered {
+      &__graph1 {
+        display: 1;
+        margin-top: 10%;
+        background-color: rgb(224, 224, 224);
+      }
+    }
   }
 }

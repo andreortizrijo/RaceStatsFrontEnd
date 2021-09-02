@@ -33,62 +33,12 @@ import { RequestsService } from '../service/requests.service';
   styleUrls: ['./livegraph.component.scss'],
 })
 export class LivegraphComponent implements OnInit {
-  speedcontext: any;
-  speed: any;
-  gearcontext: any;
-  gear: any;
+  chartcontext: any;
+  chart: any;
 
-  @ViewChild('speedchart') speedchart!: any;
-  @ViewChild('gearchart') gearchart!: any;
+  updateInterval = 20
 
-  slabels: string[] = [];
-  sdataSource: any[] = [];
-
-  glabels: string[] = [];
-  gdataSource: any[] = [];
-
-  geardata = {
-    labels: this.glabels,
-    datasets: [
-      {
-        label: 'GEAR',
-        data: this.gdataSource,
-        borderColor: 'rgb(75, 192, 192)',
-        borderWidth: 1,
-      },
-    ],
-    responsive: true,
-    maintainAspectRatio: false,
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true,
-        },
-      },
-    },
-  };
-
-  speeddata = {
-    labels: this.slabels,
-    datasets: [
-      {
-        label: 'SPEED IN KMH',
-        data: this.sdataSource,
-        borderColor: 'rgb(75, 192, 192)',
-        borderWidth: 5,
-        tension: 0.1,
-      },
-    ],
-    responsive: true,
-    maintainAspectRatio: false,
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true,
-        },
-      },
-    },
-  };
+  @ViewChild('chartelement') chartelement!: any;
 
   constructor(private request: RequestsService) {
     Chart.register(
@@ -128,38 +78,87 @@ export class LivegraphComponent implements OnInit {
     }
   }
 
-  getRecordInfo(): any {
-    var item: any;
-    let header = {
-      token: this.getToken(),
-      session: '8',
-    };
-
-    this.request
-      .httpGET('http://127.0.0.1:8000/api-datahandler/car', header)
-      .subscribe((response) => {
-        for (item in response.body) {
-          this.slabels.push('RPM');
-          this.sdataSource.push(parseFloat(response.body[item].rpm));
-          this.glabels.push('GEAR');
-          this.gdataSource.push(parseFloat(response.body[item].gear));
+  chartIt(data: any) {
+    this.chart = new Chart(this.chartcontext, {
+      type: 'line',
+      data: {
+        labels: data.label, //Change to Timestamp
+        datasets: [
+          {
+            type: 'line',
+            label: 'RPM',
+            data: data.rpm,
+            borderColor: 'rgb(20, 22, 64)',
+            borderWidth: 1,
+            tension: 0.1,
+            yAxisID: 'y',
+          },
+          {
+            type: 'line',
+            label: 'SPEED KMH',
+            data: data.speedkmh,
+            borderColor: 'rgb(20, 22, 64)',
+            borderWidth: 1,
+            yAxisID: 'y2',
+          },
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Live Graphic',
+          },
+        },
+        scales: {
+          y: {
+            position: 'left',
+            stack: 'demo',
+            stackWeight: 2,
+            grid: {
+            }
+          },
+          y2: {
+            offset: true,
+            position: 'left',
+            stack: 'demo',
+            stackWeight: 1,
+            grid: {
+            }
+          },
         }
-      });
+      },
+    });
+
+    this.chart.update();
+  }
+
+  updateData() {
+    var item: any;
+    const rpm: any[] = [];
+    const speedkmh: any[] = [];
+    const label: any[] = [];
+    let header = { token: this.getToken() };
+
+    this.request.httpGET('http://127.0.0.1:8000/api-datahandler/live', header).subscribe(
+      (response) => {
+        for (item in response.body) {
+          label.push('TIMESTAMP');
+          rpm.push(response.body[item].rpm);
+          speedkmh.push(response.body[item].speedkmh);
+        };
+
+        this.chartIt({label, rpm, speedkmh});
+      },
+      (error) => {
+        console.log('Graph Data Collector Error!');
+      }
+    );
   }
 
   ngAfterViewInit() {
-    this.speedcontext = this.speedchart.nativeElement.getContext('2d');
-    this.gearcontext = this.gearchart.nativeElement.getContext('2d');
-
-    this.getRecordInfo();
-    this.speed = new Chart(this.speedcontext, {
-      type: 'line',
-      data: this.speeddata,
-    });
-
-    this.gear = new Chart(this.gearcontext, {
-      type: 'bar',
-      data: this.geardata,
-    });
+    this.chartcontext = this.chartelement.nativeElement.getContext('2d');
+    this.updateData();
   }
 }

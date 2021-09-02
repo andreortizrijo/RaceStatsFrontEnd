@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { PathsService } from '../service/paths.service';
 import { RequestsService } from '../service/requests.service';
+import { RecorddetailService } from '../service/recorddetail.service'
 
 export interface RecordInfo {
   number: string;
@@ -31,7 +32,7 @@ export class DashboardComponent implements OnInit {
   @ViewChild('table') data!: MatTable<any>;
   @ViewChild('paginator') paginator!: MatPaginator;
 
-  constructor(private request: RequestsService, private router: Router, private path: PathsService) { }
+  constructor(private request: RequestsService, private router: Router, private path: PathsService, private recorddata: RecorddetailService) { }
 
   ngOnInit(): void {
     this.path.CheckSession(this.router);
@@ -45,17 +46,29 @@ export class DashboardComponent implements OnInit {
 
     this.request.httpGET('http://127.0.0.1:8000/api-datahandler/record', {'token':token}).subscribe(
       (response) => {
-        for(item in response.body){
-          var data = {
-            number: response.body[item].number,
-            track: response.body[item].track,
-            trackconfiguration: response.body[item].trackconfiguration,
-            carmodel: response.body[item].carmodel,
-            besttime: response.body[item].besttime
+        if(response.body.length != 0){
+          for(item in response.body){
+            var data: RecordInfo = {
+              number: response.body[item].number,
+              track: response.body[item].track,
+              trackconfiguration: response.body[item].trackconfiguration,
+              carmodel: response.body[item].carmodel,
+              besttime: response.body[item].besttime
+            };
+
+            ELEMENT_DATA.push(data);
+          };
+        }else{
+          var data: RecordInfo = {
+            number: '0',
+            track: '-- -- -- -- -- -- -- -- --',
+            trackconfiguration: '-- -- -- -- -- -- -- -- --',
+            carmodel: '-- -- -- -- -- -- -- -- --',
+            besttime: '-- -- -- -- -- -- -- -- --'
           };
 
           ELEMENT_DATA.push(data);
-        };
+        }
 
         this.length = String(ELEMENT_DATA.length);
         this.dataSource = new MatTableDataSource(ELEMENT_DATA);
@@ -63,7 +76,7 @@ export class DashboardComponent implements OnInit {
         this.data.renderRows();
         return ELEMENT_DATA;
       }
-      );
+    );
     return ELEMENT_DATA;
   };
 
@@ -74,4 +87,9 @@ export class DashboardComponent implements OnInit {
       return sessionStorage.getItem('token');
     }
   };
+
+  onClickRow(id:any){
+    console.log(id)
+    this.path.Path(this.router, '/detail', id);
+  }
 }
