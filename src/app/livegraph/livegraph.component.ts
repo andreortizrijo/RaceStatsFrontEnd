@@ -88,18 +88,51 @@ export class LivegraphComponent implements OnInit {
             type: 'line',
             label: 'RPM',
             data: data.rpm,
-            borderColor: 'rgb(20, 22, 64)',
+            borderColor: 'rgb(191, 42, 171)',
             borderWidth: 1,
             tension: 0.1,
-            yAxisID: 'y',
+            yAxisID: 'rpm',
           },
           {
             type: 'line',
-            label: 'SPEED KMH',
+            label: 'VELOCITY',
             data: data.speedkmh,
             borderColor: 'rgb(20, 22, 64)',
             borderWidth: 1,
-            yAxisID: 'y2',
+            yAxisID: 'velocity',
+          },
+          {
+            type: 'line',
+            label: 'GEAR',
+            data: data.gear,
+            borderColor: 'rgb(0, 0, 0)',
+            borderWidth: 1,
+            stepped: true,
+            yAxisID: 'gear',
+          },
+          {
+            type: 'bar',
+            label: 'GAS PEDAL',
+            data: data.gaspedal,
+            borderColor: 'rgb(42, 191, 54)',
+            borderWidth: 1,
+            yAxisID: 'pedals',
+          },
+          {
+            type: 'bar',
+            label: 'BRAKE PEDAL',
+            data: data.brakepedal,
+            borderColor: 'rgb(191, 42, 55)',
+            borderWidth: 1,
+            yAxisID: 'pedals',
+          },
+          {
+            type: 'bar',
+            label: 'STEER ANGLE',
+            data: data.steerangle,
+            borderColor: 'rgb(191, 102, 42)',
+            borderWidth: 1,
+            yAxisID: 'others',
           },
         ]
       },
@@ -112,14 +145,21 @@ export class LivegraphComponent implements OnInit {
           },
         },
         scales: {
-          y: {
+          rpm: {
             position: 'left',
             stack: 'demo',
             stackWeight: 2,
             grid: {
             }
           },
-          y2: {
+          velocity: {
+            position: 'left',
+            stack: 'demo',
+            stackWeight: 2,
+            grid: {
+            }
+          },
+          others: {
             offset: true,
             position: 'left',
             stack: 'demo',
@@ -127,7 +167,23 @@ export class LivegraphComponent implements OnInit {
             grid: {
             }
           },
-        }
+          gear: {
+            offset: true,
+            position: 'left',
+            stack: 'demo',
+            stackWeight: 1,
+            grid: {
+            }
+          },
+          pedals: {
+            offset: true,
+            position: 'left',
+            stack: 'demo',
+            stackWeight: 1,
+            grid: {
+            }
+          },
+        },
       },
     });
 
@@ -136,20 +192,31 @@ export class LivegraphComponent implements OnInit {
 
   updateData() {
     var item: any;
+    const label: any[] = [];
     const rpm: any[] = [];
     const speedkmh: any[] = [];
-    const label: any[] = [];
+    const gear: any[] = [];
+    const gaspedal: any[] = [];
+    const brakepedal: any[] = [];
+    const steerangle: any[] = [];
     let header = { token: this.getToken() };
 
     this.request.httpGET('http://127.0.0.1:8000/api-datahandler/live', header).subscribe(
       (response) => {
         for (item in response.body) {
-          label.push('TIMESTAMP');
+          label.push(response.body[item].timestamp);
           rpm.push(response.body[item].rpm);
           speedkmh.push(response.body[item].speedkmh);
+          gear.push(response.body[item].gear);
+          gaspedal.push(response.body[item].gaspedal);
+          brakepedal.push(response.body[item].brakepedal);
+          steerangle.push(response.body[item].steerangle);
+
+          setTimeout(() => {
+            this.chartIt({label, rpm, speedkmh, gear, gaspedal, brakepedal, steerangle});
+          }, 1000);
         };
 
-        this.chartIt({label, rpm, speedkmh});
       },
       (error) => {
         console.log('Graph Data Collector Error!');

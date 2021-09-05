@@ -89,7 +89,6 @@ export class DashboardComponent implements OnInit {
   };
 
   onClickRow(id:any){
-    console.log(id)
-    this.path.Path(this.router, '/detail', id);
+    this.path.RecordPath(this.router, '/detail', id);
   }
 }
