@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DetailComponent } from './detail/detail.component';
+import { TeamComponent } from './team/team.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { DetailComponent } from './detail/detail.component';
     DashboardComponent,
     NavbarComponent,
     DetailComponent,
+    TeamComponent,
   ],
   imports: [
     BrowserModule,

@@ -33,10 +33,12 @@ import { RequestsService } from '../service/requests.service';
   styleUrls: ['./livegraph.component.scss'],
 })
 export class LivegraphComponent implements OnInit {
+
+  interval: any;
   chartcontext: any;
   chart: any;
 
-  updateInterval = 20
+  updateInterval = 5000
 
   @ViewChild('chartelement') chartelement!: any;
 
@@ -78,16 +80,16 @@ export class LivegraphComponent implements OnInit {
     }
   }
 
-  chartIt(data: any) {
+  chartIt() {
     this.chart = new Chart(this.chartcontext, {
       type: 'line',
       data: {
-        labels: data.label, //Change to Timestamp
+        labels: [],
         datasets: [
           {
             type: 'line',
             label: 'RPM',
-            data: data.rpm,
+            data: [],
             borderColor: 'rgb(191, 42, 171)',
             borderWidth: 1,
             tension: 0.1,
@@ -96,7 +98,7 @@ export class LivegraphComponent implements OnInit {
           {
             type: 'line',
             label: 'VELOCITY',
-            data: data.speedkmh,
+            data: [],
             borderColor: 'rgb(20, 22, 64)',
             borderWidth: 1,
             yAxisID: 'velocity',
@@ -104,7 +106,7 @@ export class LivegraphComponent implements OnInit {
           {
             type: 'line',
             label: 'GEAR',
-            data: data.gear,
+            data: [],
             borderColor: 'rgb(0, 0, 0)',
             borderWidth: 1,
             stepped: true,
@@ -113,7 +115,7 @@ export class LivegraphComponent implements OnInit {
           {
             type: 'bar',
             label: 'GAS PEDAL',
-            data: data.gaspedal,
+            data: [],
             borderColor: 'rgb(42, 191, 54)',
             borderWidth: 1,
             yAxisID: 'pedals',
@@ -121,7 +123,7 @@ export class LivegraphComponent implements OnInit {
           {
             type: 'bar',
             label: 'BRAKE PEDAL',
-            data: data.brakepedal,
+            data: [],
             borderColor: 'rgb(191, 42, 55)',
             borderWidth: 1,
             yAxisID: 'pedals',
@@ -129,7 +131,7 @@ export class LivegraphComponent implements OnInit {
           {
             type: 'bar',
             label: 'STEER ANGLE',
-            data: data.steerangle,
+            data: [],
             borderColor: 'rgb(191, 102, 42)',
             borderWidth: 1,
             yAxisID: 'others',
@@ -184,48 +186,97 @@ export class LivegraphComponent implements OnInit {
             }
           },
         },
+
       },
     });
 
     this.chart.update();
-  }
+  };
+
+      // console.log(this.graphproperties);
+      //     this.chart.data.labels.push(response.body[item].timestamp);
+      //     this.chart.data.datasets[0].data.push(response.body[item].rpm);
+      //     this.chart.data.datasets[1].data.push(response.body[item].speedkmh);
+      //     this.chart.data.datasets[2].data.push(response.body[item].gear);
+      //     this.chart.data.datasets[3].data.push(response.body[item].gaspedal);
+      //     this.chart.data.datasets[4].data.push(response.body[item].brakepedal);
+      //     this.chart.data.datasets[5].data.push(response.body[item].steerangle);
+
+
+  calcTime(datasize: number): number {
+      let wtime = datasize/(this.updateInterval/1000);
+      return 5000;
+  };
+
+  prepData(response:any) {
+    let graphproperties: any = {};
+    for (const item in response.body) {
+      for (let [key, value] of Object.entries(response.body[item])) {
+        if (graphproperties[key] == undefined) {
+          graphproperties[key] = [];
+        }
+        graphproperties[key].push(value);
+      }
+    };
+    return graphproperties
+  };
 
   updateData() {
-    var item: any;
-    const label: any[] = [];
-    const rpm: any[] = [];
-    const speedkmh: any[] = [];
-    const gear: any[] = [];
-    const gaspedal: any[] = [];
-    const brakepedal: any[] = [];
-    const steerangle: any[] = [];
+
     let header = { token: this.getToken() };
 
     this.request.httpGET('http://127.0.0.1:8000/api-datahandler/live', header).subscribe(
       (response) => {
-        for (item in response.body) {
-          label.push(response.body[item].timestamp);
-          rpm.push(response.body[item].rpm);
-          speedkmh.push(response.body[item].speedkmh);
-          gear.push(response.body[item].gear);
-          gaspedal.push(response.body[item].gaspedal);
-          brakepedal.push(response.body[item].brakepedal);
-          steerangle.push(response.body[item].steerangle);
-
-          setTimeout(() => {
-            this.chartIt({label, rpm, speedkmh, gear, gaspedal, brakepedal, steerangle});
-          }, 1000);
+        let chartdatasets: any = {
+          'rpm': 0,
+          'speedkmh': 1,
+          'gear': 2,
+          'gaspedal': 3,
+          'brakepedal': 4,
+          'steerangle': 5
         };
 
+        let graphproperties = this.prepData(response)
+        this.plotData(graphproperties, chartdatasets, graphproperties['timestamp'].length);
       },
       (error) => {
         console.log('Graph Data Collector Error!');
       }
     );
-  }
+  };
+
+  plotData(graphproperties: any, datasetscontroll: any, graphpropertiessize: any){
+    for (let [key, value] of Object.entries(graphproperties)){
+      if (key == 'timestamp'){
+        this.chart.data.labels = graphproperties['timestamp'];
+        continue;
+      };
+
+      setInterval(() =>{
+        console.log(datasetscontroll);
+        console.log(graphproperties);
+
+       this.chart.data.datasets[datasetscontroll[key]].data.push(graphproperties[key]);
+      }, this.calcTime(graphpropertiessize));
+
+      //this.chart.data.datasets[datasetscontroll[key]].data.push()
+    };
+    this.chart.update();
+  };
 
   ngAfterViewInit() {
     this.chartcontext = this.chartelement.nativeElement.getContext('2d');
+    this.chartIt();
     this.updateData();
-  }
-}
+
+    this.interval = setInterval(() => {
+      this.updateData();
+    },this.updateInterval);
+
+  };
+
+  ngOnDestroy() {
+    clearTimeout(this.interval);
+
+  };
+};

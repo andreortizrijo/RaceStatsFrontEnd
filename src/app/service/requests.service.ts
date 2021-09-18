@@ -11,16 +11,22 @@ export class RequestsService {
 
   httpGET(api: string, header: any): Observable<HttpResponse<any>>{
     return this.http.get(api, {
-        headers: new HttpHeaders( header ),
-        observe: 'response',
-      }
-      );
-    };
+      headers: new HttpHeaders( header ),
+      observe: 'response',
+    });
+  };
 
-    httpPOST(api: string, body: any, header: any = ''): Observable<HttpResponse<any>>{
-      return this.http.post(api, body, {
+  httpPOST(api: string, body: any, header: any = ''): Observable<HttpResponse<any>>{
+    return this.http.post(api, body, {
       headers: new HttpHeaders({ 'token': header }),
       observe: 'response',
-    })
-  }
+    });
+  };
+
+  httpPUT(api: string, body?: any, header?: any): Observable<HttpResponse<any>>{
+    return this.http.put(api, body, {
+      headers: new HttpHeaders( header ),
+      observe: 'response',
+    });
+  };
 }

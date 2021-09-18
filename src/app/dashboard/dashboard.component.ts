@@ -23,7 +23,6 @@ const ELEMENT_DATA: RecordInfo[] = [];
   styleUrls: ['./dashboard.component.scss']
 })
 
-
 export class DashboardComponent implements OnInit {
   displayedColumns: string[] = ['number', 'track', 'trackconfiguration', 'carmodel', 'besttime'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
@@ -73,7 +72,6 @@ export class DashboardComponent implements OnInit {
         this.length = String(ELEMENT_DATA.length);
         this.dataSource = new MatTableDataSource(ELEMENT_DATA);
         this.dataSource.paginator = this.paginator;
-        this.data.renderRows();
         return ELEMENT_DATA;
       }
     );

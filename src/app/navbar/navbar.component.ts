@@ -53,10 +53,12 @@ export class NavbarComponent implements OnInit {
           localStorage.removeItem('token');
           localStorage.removeItem('islogin');
           localStorage.removeItem('name');
+          localStorage.removeItem('team');
         }else{
           sessionStorage.removeItem('token');
           sessionStorage.removeItem('islogin');
           sessionStorage.removeItem('name');
+          sessionStorage.removeItem('team');
         }
 
         this.loginstate.emit(false);
