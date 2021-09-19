@@ -1,7 +1,6 @@
 <div class='team'>
   <div class='' *ngIf='hasTeam'>
-    <table mat-table #data [dataSource]='dataSource' class='team__unjoined'>
-
+    <table mat-table #tablelist [dataSource]='dataSource' class='team__unjoined'>
       <ng-container matColumnDef='name'>
         <th mat-header-cell *matHeaderCellDef class='team__unjoined__title'> Name </th>
         <td mat-cell *matCellDef='let info' class='team__unjoined__information'>{{info.name}}</td>
@@ -14,17 +13,37 @@
 
       <ng-container matColumnDef='join'>
         <th mat-header-cell *matHeaderCellDef class='team__unjoined__title'>  </th>
-        <!-- <td mat-cell *matCellDef='let info' class='team__unjoined__information'><a (click)='jointeam()'>Join Team</a></td> -->
         <td mat-cell *matCellDef='let info' class='team__unjoined__information'><button mat-flat-button class='team__unjoined__information__btn' (click)='jointeam(info.id)'>Apply Team</button></td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <mat-paginator #paginator [length]="length" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="team__paginator"></mat-paginator>
+    <mat-paginator #paginatorlist [length]="length" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="team__paginator"></mat-paginator>
   </div>
 
-  <div class='' *ngIf='!hasTeam'>
+  <div class='team__joined' *ngIf='!hasTeam'>
+    <div class='team__joined__profile'>
+      <h1 class='team__joined__profile__title'>{{teamname}}</h1>
+      <h3 class='team__joined__profile__description'>{{teamdescription}}</h3>
 
+      <button class='team__joined__leave' (click)='leave()'>Leave Team</button>
+
+      <table mat-table #teamprofile [dataSource]="teamSource" class='team__table'>
+        <ng-container matColumnDef="member">
+          <th mat-header-cell *matHeaderCellDef class='team__joined__table__title'> Member </th>
+          <td mat-cell *matCellDef="let info" class="team__joined__table__information"> {{info.member}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="kick">
+          <th mat-header-cell *matHeaderCellDef class='team__joined__table__title'>  </th>
+          <td mat-cell *matCellDef="let info" class='team__joined__table__information'><button mat-flat-button class='team__joined__table__table__information__btn' *ngIf='ismod' (click)='kick(info.id)'>X</button></td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedTeamColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedTeamColumns;"></tr>
+      </table>
+
+    </div>
   </div>
 </div>

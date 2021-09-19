@@ -205,7 +205,7 @@ export class LivegraphComponent implements OnInit {
 
   calcTime(datasize: number): number {
       let wtime = datasize/(this.updateInterval/1000);
-      return 5000;
+      return wtime;
   };
 
   prepData(response:any) {
@@ -222,7 +222,6 @@ export class LivegraphComponent implements OnInit {
   };
 
   updateData() {
-
     let header = { token: this.getToken() };
 
     this.request.httpGET('http://127.0.0.1:8000/api-datahandler/live', header).subscribe(
@@ -251,17 +250,17 @@ export class LivegraphComponent implements OnInit {
         this.chart.data.labels = graphproperties['timestamp'];
         continue;
       };
+      this.chart.data.datasets[datasetscontroll[key]].data.shift();
+      this.chart.update();
 
       setInterval(() =>{
-        console.log(datasetscontroll);
-        console.log(graphproperties);
-
-       this.chart.data.datasets[datasetscontroll[key]].data.push(graphproperties[key]);
+        this.chart.data.datasets[datasetscontroll[key]].data.push(graphproperties[key]);
+        this.chart.update();
       }, this.calcTime(graphpropertiessize));
 
       //this.chart.data.datasets[datasetscontroll[key]].data.push()
     };
-    this.chart.update();
+    //this.chart.update();
   };
 
   ngAfterViewInit() {

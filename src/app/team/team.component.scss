@@ -11,6 +11,59 @@
     color: #fff;
   }
 
+
+  &__joined {
+    flex-direction: row;
+    margin: 0rem;
+    padding: 1rem;
+    border-radius: 0.4rem;
+    width: 60%;
+    padding: 2rem;
+    background-color: #141640;
+
+    &__leave {
+      background-color: #BF2A37;
+      color: #fff;
+      border-radius: 0.4rem;
+      padding: 0.3rem;
+      width: 10%;
+      margin-bottom: 1rem;
+    }
+
+    &__profile {
+      &__title {
+        color: #fff;
+      }
+
+      &__description {
+        color: #fff;
+      }
+    }
+
+    &__table {
+      &__title {
+        margin: 0rem;
+        color: #fff;
+        background-color: #BF2A37;
+        width: 70%;
+      }
+
+      &__information {
+        margin: 0rem;
+        text-align: start;
+        background-color: #49577399;
+        color: #fff;
+        font-weight: lighter;
+
+        &__btn {
+          background-color: #141640;
+          color: #fff;
+          border-radius: 0.4rem;
+        }
+      }
+    }
+  }
+
   &__unjoined {
     flex-direction: row;
     margin: 0rem;
@@ -34,8 +87,10 @@
       font-weight: lighter;
 
       &__btn {
-        color: #fff;
         background-color: #141640;
+        color: #fff;
+        border-radius: 0.4rem;
+        width: 70%;
       }
     }
   }
