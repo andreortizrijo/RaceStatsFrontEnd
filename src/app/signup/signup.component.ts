@@ -42,9 +42,10 @@ export class SignupComponent implements OnInit {
     };
   }
 
-  InputChecker(input:any, property:string) {
+  InputChecker(property:string) {
     let message = '';
-    if(input.invalid && (input.dirty || input.touched)) {
+
+    if(this.signupForm.get(property)?.invalid && (this.signupForm.get(property)?.dirty || this.signupForm.get(property)?.touched)) {
       if(property == 'password'){
         return message = 'Must contain at least 8 characters and must have 1 uppercase, 1 lowercase, 1 number and 1 special character.'
       }
