@@ -91,13 +91,6 @@ export class TeamComponent implements OnInit {
             };
             ELEMENT_DATA.push(data);
           };
-        }else{
-          var data: TeamInfo = {
-            id: '0',
-            name: '-- -- -- --',
-            members: '0',
-          };
-          ELEMENT_DATA.push(data);
         };
 
         this.length = String(ELEMENT_DATA.length);
