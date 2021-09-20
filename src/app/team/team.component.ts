@@ -2,11 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { LoginstatecontrolService } from '../service/loginstatecontrol.service';
-import { PathsService } from '../service/paths.service';
 import { RequestsService } from '../service/requests.service';
-import { range } from 'rxjs';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 export interface TeamInfo {
   id: string;
@@ -29,6 +26,9 @@ const TEAM_ELEMENTE_DATA: TeamProfile[] = []
 })
 
 export class TeamComponent implements OnInit {
+  teamForm: FormGroup = new FormGroup({});
+  formteam: any = false;
+  createteam: any = true;
   hasTeam: any = true;
   ismod: any = false;
   teamname: string = '';
@@ -44,7 +44,7 @@ export class TeamComponent implements OnInit {
 
   @ViewChild('teamprofile') team!: MatTable<any>;
 
-  constructor(private request: RequestsService) { }
+  constructor(private request: RequestsService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
     const teamid = this.checkTeam();
@@ -54,6 +54,25 @@ export class TeamComponent implements OnInit {
       this.getTeam(teamid);
     }else{
       this.getTeamDetail(teamid);
+    };
+
+    this.initializeForm();
+  }
+
+  initializeForm(): void {
+    this.teamForm = this.fb.group({
+      teamname: [''],
+      teamdescription: [''],
+    });
+  }
+
+  get teamName() { return this.teamForm.get('teamname')! }
+  get teamDescription() { return this.teamForm.get('teamdescription')! }
+
+  generatePayload() {
+    return {
+      'name': this.teamName.value,
+      'description': this.teamDescription.value,
     };
   }
 
@@ -92,6 +111,7 @@ export class TeamComponent implements OnInit {
 
   private getTeamDetail(teamid: any): TeamProfile[] {
     this.hasTeam = false;
+    this.createteam = false;
     const token = this.getToken();
     var TEAM_ELEMENT_DATA: TeamProfile[] = [];
 
@@ -180,7 +200,7 @@ export class TeamComponent implements OnInit {
     const token = this.getToken();
     this.request.httpPUT('http://127.0.0.1:8000/api-users/leaveteam', null, {'token': token}).subscribe(
       (response) => {
-        if(localStorage.getItem('team') != '0'){
+        if(localStorage.getItem('team')){
           localStorage.setItem('team', '0');
         }else{
           sessionStorage.setItem('team', '0');
@@ -188,5 +208,26 @@ export class TeamComponent implements OnInit {
         location.reload();
       }
     )
+  }
+
+  addteam() {
+    this.createteam = false;
+    this.formteam = true;
+  }
+
+  foundteam() {
+    const data = this.generatePayload();
+    const token = this.getToken();
+
+    this.request.httpPOST('http://127.0.0.1:8000/api-teams/team', data, token).subscribe(
+      (response) => {
+        if(localStorage.getItem('team')){
+          localStorage.setItem('team', response.body);
+        }else{
+          sessionStorage.setItem('team', response.body);
+        };
+        location.reload();
+      }
+    );
   }
 }

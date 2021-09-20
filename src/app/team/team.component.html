@@ -1,4 +1,15 @@
 <div class='team'>
+  <button class='team__create-team' (click)='addteam()' *ngIf='createteam'>+ Create Team</button>
+  <div class='team__create-team__container' *ngIf='formteam'>
+    <form [formGroup]='teamForm'>
+      <div class='mb-3 team__create-team__container__body'>
+        <input type='text' class='form-control team__create-team__container__body__input__form' formControlName="teamname" #teamname placeholder="Team name">
+        <textarea cols="30" rows="10" class='form-control team__create-team__container__body__input__form' formControlName="teamdescription" #teamdescription placeholder="Team description here!"></textarea>
+      </div>
+    </form>
+    <button class='btn team__create-team__container__body__sign-in-btn' (click)='foundteam()'>Create</button>
+  </div>
+
   <div class='' *ngIf='hasTeam'>
     <table mat-table #tablelist [dataSource]='dataSource' class='team__unjoined'>
       <ng-container matColumnDef='name'>
